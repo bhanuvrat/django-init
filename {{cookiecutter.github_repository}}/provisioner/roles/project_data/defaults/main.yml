@@ -21,3 +21,8 @@ gunicorn_errorlog: '-'
 gunicorn_accesslog: '-'
 gunicorn_loglevel: info
 gunicorn_conf_path: /etc/gunicorn
+
+{% raw %}
+# webpack related valriables
+webpack_config: '{{ project_path }}/{{ project_name }}/static/webpack.prod.config.js'
+webpack_path: '{{ project_path }}/node_modules/.bin/webpack'{% endraw %}

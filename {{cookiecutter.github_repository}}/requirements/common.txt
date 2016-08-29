@@ -29,15 +29,13 @@ django-uuid-upload-path==1.0.0
 # REST APIs
 # -------------------------------------
 djangorestframework==3.4.3
-{%- if cookiecutter.add_sass_with_django_compressor.lower() == 'y' %}
-
-# Static files
-# -------------------------------------
-django-compressor==2.1
-django-libsass==0.7
-django-compressor-autoprefixer==0.1.0
-{%- endif %}
 
 # LOGGING
 # -------------------------------------
 django-log-request-id==1.1.0
+{%- if cookiecutter.add_webpack.lower() == 'y' %}
+
+# WEBPACK
+# -------------------------------------
+django-webpack-loader==0.3.3
+{%- endif %}

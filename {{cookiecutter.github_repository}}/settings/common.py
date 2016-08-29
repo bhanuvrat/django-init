@@ -32,9 +32,8 @@ INSTALLED_APPS = (
 
     'rest_framework',  # http://www.django-rest-framework.org/
     'versatileimagefield',  # https://github.com/WGBH/django-versatileimagefield/
-{%- if cookiecutter.add_sass_with_django_compressor.lower() == 'y' %}
-
-    'compressor',
+{%- if cookiecutter.add_webpack.lower() == 'y' %}
+    'webpack_loader',  # https://github.com/owais/django-webpack-loader
 {%- endif %}
 )
 
@@ -231,6 +230,9 @@ STATIC_ROOT = str(ROOT_DIR.path('.staticfiles'))
 STATIC_URL = '/static/'
 
 # A list of locations of additional static files
+{%- if cookiecutter.add_webpack.lower() == 'y' %}
+# Specify the static directory in fabfile also.
+{%- endif %}
 STATICFILES_DIRS = (
     str(APPS_DIR.path('static')),
 )
@@ -240,24 +242,8 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-{%- if cookiecutter.add_sass_with_django_compressor.lower() == 'y' %}
-    'compressor.finders.CompressorFinder',
-{%- endif %}
-)
-{%- if cookiecutter.add_sass_with_django_compressor.lower() == 'y' %}
-
-# Django Compressor Configuration
-COMPRESS_CSS_FILTERS = [
-    'django_compressor_autoprefixer.AutoprefixerFilter',
-    'compressor.filters.cssmin.CSSMinFilter',
-]
-
-COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'django_libsass.SassCompiler'),
 )
 
-COMPRESS_ENABLED = True
-{%- endif %}
 
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -357,3 +343,17 @@ LOGGING = {
         },
     }
 }
+{%- if cookiecutter.add_webpack.lower() == 'y' %}
+
+# WEBPACK
+WEBPACK_LOADER = {
+   'DEFAULT': {
+       'CACHE': not DEBUG,
+       'BUNDLE_DIR_NAME': '{{ cookiecutter.main_module }}/static/dist/assets/',  # must end with slash
+       'STATS_FILE': str(ROOT_DIR.path('webpack-stats.json')),
+       'POLL_INTERVAL': 0.1,
+       'TIMEOUT': None,
+       'IGNORE': ['.+\.hot-update.js', '.+\.map']
+   }
+}
+{%- endif %}

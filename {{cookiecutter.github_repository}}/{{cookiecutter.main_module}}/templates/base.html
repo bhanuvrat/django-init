@@ -1,7 +1,9 @@
-{%- if cookiecutter.add_sass_with_django_compressor.lower() == 'y' %}
-{%- raw %}{% load compress %}{% endraw %}
+{% raw %}{% load staticfiles i18n %}{% endraw %}
+{%- if cookiecutter.add_webpack.lower() == 'y' %}
+{%- raw %}{% load webpack_static from webpack_loader %}
+{% load render_bundle from webpack_loader %}{%- endraw %}
 {%- endif %}
-{% raw %}{% load staticfiles i18n %}<!DOCTYPE html>
+{% raw %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
@@ -16,15 +18,11 @@
       <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    {% block css %}
-    <link href="{% static 'css/normalize.css' %}" rel="stylesheet">{% endraw %}
-    {%- if cookiecutter.add_sass_with_django_compressor.lower() == 'y' %}
-    {% raw %}{% compress css %}
-    <link href="{% static 'css/main.scss' %}"  type="text/x-scss" rel="stylesheet">
-    {% endcompress %}{% endraw %}
-    {%- else %}
-    {% raw %}<link href="{% static 'css/main.css' %}" rel="stylesheet">{% endraw %}
-    {%- endif %}{% raw %}
+    {% block css %}{% endraw %}
+      {%- if cookiecutter.add_webpack.lower() != 'y' %}
+      {% raw %}<link href="{% static 'css/normalize.css' %}" rel="stylesheet">
+      <link href="{% static 'css/main.css' %}" rel="stylesheet">{% endraw %}
+      {%- endif %}{% raw %}
     {% endblock css %}
     {% block head_extras %}{% endblock %}
   </head>
@@ -54,13 +52,11 @@
       <!-- Your stuff: Third-party javascript libraries go here -->
 
       <!-- place project specific Javascript in this file -->{% endraw %}
-      {%- if cookiecutter.add_sass_with_django_compressor.lower() == 'y' %}
-      {% raw %}{% compress js %}{% endraw %}
-      {%- endif %}{% raw %}
-      <script src="{% static 'js/main.js' %}"></script>{% endraw %}
-      {%- if cookiecutter.add_sass_with_django_compressor.lower() == 'y' %}
-      {% raw %}{% endcompress %}{% endraw %}
-      {%- endif %}{% raw %}
+      {%- if cookiecutter.add_webpack.lower() == 'y' %}
+        {% raw %}{% render_bundle 'main' 'js' %}{% endraw %}
+      {%- else %}
+        {% raw %}<script src="{% static 'js/main.js' %}"></script>{% endraw %}
+        {%- endif %}{% raw %}
 
       {% if debug %}
         <!--Livereloading support -->
