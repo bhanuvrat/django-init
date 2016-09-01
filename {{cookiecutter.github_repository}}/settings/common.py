@@ -32,7 +32,7 @@ INSTALLED_APPS = (
 
     'rest_framework',  # http://www.django-rest-framework.org/
     'versatileimagefield',  # https://github.com/WGBH/django-versatileimagefield/
-{%- if cookiecutter.add_webpack.lower() == 'y' %}
+{%- if cookiecutter.webpack.lower() == 'y' %}
     'webpack_loader',  # https://github.com/owais/django-webpack-loader
 {%- endif %}
 )
@@ -230,7 +230,7 @@ STATIC_ROOT = str(ROOT_DIR.path('.staticfiles'))
 STATIC_URL = '/static/'
 
 # A list of locations of additional static files
-{%- if cookiecutter.add_webpack.lower() == 'y' %}
+{%- if cookiecutter.webpack.lower() == 'y' %}
 # Specify the static directory in fabfile also.
 {%- endif %}
 STATICFILES_DIRS = (
@@ -343,7 +343,7 @@ LOGGING = {
         },
     }
 }
-{%- if cookiecutter.add_webpack.lower() == 'y' %}
+{%- if cookiecutter.webpack.lower() == 'y' %}
 
 # WEBPACK
 WEBPACK_LOADER = {

@@ -33,7 +33,7 @@ djangorestframework==3.4.3
 # LOGGING
 # -------------------------------------
 django-log-request-id==1.1.0
-{%- if cookiecutter.add_webpack.lower() == 'y' %}
+{%- if cookiecutter.webpack.lower() == 'y' %}
 
 # WEBPACK
 # -------------------------------------
